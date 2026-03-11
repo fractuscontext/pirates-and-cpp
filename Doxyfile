@@ -1,0 +1,43 @@
+# SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+# SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+#
+# SPDX-License-Identifier: MIT
+
+PROJECT_NAME           = "Uni Assignment"
+OUTPUT_DIRECTORY       = docs/doxygen_output
+FULL_PATH_NAMES        = NO
+
+INPUT                  = . src/ include/
+FILE_PATTERNS          = *.cpp *.h *.hpp
+RECURSIVE              = YES
+
+QUIET                  = YES
+WARNINGS               = YES
+
+# Throws an error if a function/class is declared but has no documentation block.
+WARN_IF_UNDOCUMENTED   = YES
+
+# Throws an error if your Doxygen syntax is broken (e.g., a misspelled @param).
+WARN_IF_DOC_ERROR      = YES
+
+# Throws an error if you document a function but forget to document one of its parameters.
+WARN_NO_PARAMDOC       = YES
+
+# CRITICAL: Treats all the above warnings as fatal errors. This stops the git commit.
+WARN_AS_ERROR          = YES
+
+# CRITICAL: Must be NO. If YES, Doxygen pretends everything is documented
+# and won't trigger the WARN_IF_UNDOCUMENTED errors.
+EXTRACT_ALL            = NO
+
+# The rubric dictates documenting "interfaces" (public APIs) in headers.
+# This prevents Doxygen from complaining if you don't document private helper
+# variables that users of your class shouldn't care about anyway.
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_MAN           = NO
+GENERATE_RTF           = NO
+GENERATE_XML           = NO

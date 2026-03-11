@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+# SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+#
+# SPDX-License-Identifier: MIT
+
+BasedOnStyle: LLVM
+Language: Cpp
+Standard: c++20
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+
+# Places the left curly brace '{' on the end of the opening statement line
+BreakBeforeBraces: Attach
+
+# Forces braces on all control blocks (if, else, while, etc.), even single-line ones
+InsertBraces: true
+
+# No space between function/control block names and parentheses (e.g., function(); not function ();)
+SpaceBeforeParens: Never
+
+# Uses a single space after the type, but never after the pointer/reference (e.g., int& number = i;)
+PointerAlignment: Left
+
+# When flowing onto a second line, commas go at the end of the broken line
+AlignAfterOpenBracket: Align
+
+# Operators start a new line
+BreakBeforeBinaryOperators: All
+AlignOperands: Align
+
+SpacesBeforeTrailingComments: 1
+
+# Do not use any space after the comment delimiter (// or /*); put the comment directly after.
+SpacesInLineCommentPrefix:
+  Minimum: 0
+  Maximum: 0

@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(cppdbg+lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/DeadMansDrawPlusPlus",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "CMake Build"
+        },
+        {
+            "name": "(cppdbg+lldb) Attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/build/DeadMansDrawPlusPlus",
+            "MIMode": "lldb"
+        },
+        {
+            "name": "(lldb-dap) Launch",
+            "type": "lldb-dap",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "program": "${workspaceFolder}/build/DeadMansDrawPlusPlus",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake Build"
+
+        }
+    ]
+}

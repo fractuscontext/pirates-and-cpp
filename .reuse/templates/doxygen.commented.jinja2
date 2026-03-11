@@ -1,0 +1,13 @@
+{#
+SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+SPDX-License-Identifier: MIT
+#}
+/**
+ * @file {{ filename }}
+ * @brief [Brief description of this file's purpose]
+ *
+{% for line in copyright_lines %}
+ * {{ line }}{% endfor %}
+ *
+ * SPDX-License-Identifier: {{ spdx_expressions | join(' AND ') }}
+ */

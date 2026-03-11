@@ -1,0 +1,11 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+    "clangd.arguments": [
+        "--background-index",
+        "--compile-commands-dir=${workspaceFolder}/build",
+        "--clang-tidy",
+        "--header-insertion=iwyu"
+    ],
+    "C_Cpp.intelliSenseEngine": "disabled" // Disable if using clangd
+}

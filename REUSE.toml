@@ -1,0 +1,13 @@
+version = 1
+
+[[annotations]]
+path = ["**/*.lock", ".gitignore"]
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "CC0-1.0"
+precedence = "override"
+
+[[annotations]]
+path = "README.md"
+SPDX-FileCopyrightText = "fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>"
+SPDX-License-Identifier = "MIT"
+precedence = "aggregate"

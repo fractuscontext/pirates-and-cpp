@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+# SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+#
+# SPDX-License-Identifier: MIT
+
+---
+# Enable specific categories of checks, disable all others by default
+Checks: >
+  -*,
+  bugprone-*,
+  cppcoreguidelines-*,
+  google-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  misc-const-correctness,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -readability-magic-numbers,
+  -google-readability-todo,
+  -modernize-use-trailing-return-type
+
+WarningsAsErrors: '*' # Optional: Treats all these warnings as hard errors
+
+CheckOptions:
+  # Naming Conventions
+  # ==========================================
+  # Classes and Enums: PascalCase (e.g., MyClass, MyEnum)
+  readability-identifier-naming.ClassCase: CamelCase
+  readability-identifier-naming.EnumCase: CamelCase
+  readability-identifier-naming.EnumConstantCase: CamelCase
+
+  # Functions and Variables: camelCase (e.g., functionName, variableName)
+  readability-identifier-naming.FunctionCase: camelBack
+  readability-identifier-naming.VariableCase: camelBack
+
+  # Private Member Variables: single underscore prefix (e.g., _myVariable)
+  readability-identifier-naming.PrivateMemberPrefix: '_'
+  readability-identifier-naming.PrivateMemberCase: camelBack
+
+  # C++ Best Practices & Declarations
+  # Header Guards: Enforces #ifndef style over #pragma once
+  google-build-using-namespace.HeaderFileExtensions: 'h,hpp'
+
+  # Pointers/References: Flag arithmetic and raw pointer ownership issues
+  cppcoreguidelines-owning-memory.Enabled: true
+
+  # Things to Avoid (From Rubric)
+  # Ban C-style casts (forces static_cast, etc.)
+  google-readability-casting.Enabled: true
+
+  # Ban goto statements
+  cppcoreguidelines-avoid-goto.Enabled: true
+
+  # Ban C-style variadic functions ("printf style")
+  cppcoreguidelines-pro-type-vararg.Enabled: true
+
+  # Ban Unions
+  cppcoreguidelines-pro-type-union-access.Enabled: true
+---
