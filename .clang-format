@@ -10,7 +10,8 @@ Standard: c++20
 IndentWidth: 4
 TabWidth: 4
 UseTab: Never
-ColumnLimit: 100
+AccessModifierOffset: -4
+ReflowComments: false
 
 # Places the left curly brace '{' on the end of the opening statement line
 BreakBeforeBraces: Attach
