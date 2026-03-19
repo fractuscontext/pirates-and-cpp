@@ -1,3 +1,11 @@
+/**
+ * @file Game.cpp
+ * @brief Implements the Game singleton and game loop.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
+ */
 #include "Game.hpp"
 #include "AnchorCard.hpp"
 #include "CannonCard.hpp"
@@ -17,20 +25,20 @@ Game::Game()
     : _player1(nullptr), _player2(nullptr), _currentTurn(1), _totalTurns(20),
       _isGameOver(false), _currentPlayer(nullptr) {}
 
-Game::~Game() { _cleanup(); }
+Game::~Game() { cleanup(); }
 
 Game& Game::instance() {
-    static Game _instance;
-    return _instance;
+    static Game instance;
+    return instance;
 }
 
 void Game::init() {
-    _cleanup();
-    _createDeck();
+    cleanup();
+    createDeck();
     shuffleDeck();
 
-    std::string names[] = {"Sam", "Billy", "Jen",   "Bob",  "Sally",
-                           "Joe", "Sue",   "Sasha", "Tina", "Marge"};
+    std::string const names[] = {"Sam", "Billy", "Jen",   "Bob",  "Sally",
+                                 "Joe", "Sue",   "Sasha", "Tina", "Marge"};
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, 9);
@@ -40,13 +48,14 @@ void Game::init() {
     _currentPlayer = _player1;
 }
 
-void Game::_createDeck() {
-    // 54 cards, 9 suits, 6 cards each
-    // Suits: Cannon, Chest, Key, Sword, Hook, Oracle, Map, Mermaid, Kraken (Anchor bonus)
-    // Values 2-7 for most suits. Mermaid 4-9.
-    CardType suits[] = {CardType::Cannon, CardType::Chest,  CardType::Key,
-                        CardType::Sword,  CardType::Hook,   CardType::Oracle,
-                        CardType::Map,    CardType::Kraken, CardType::Anchor};
+void Game::createDeck() {
+    //54 cards, 9 suits, 6 cards each
+    //Suits: Cannon, Chest, Key, Sword, Hook, Oracle, Map, Mermaid, Kraken (Anchor bonus)
+    //Values 2-7 for most suits. Mermaid 4-9.
+    CardType const suits[]
+        = {CardType::Cannon, CardType::Chest,  CardType::Key,
+           CardType::Sword,  CardType::Hook,   CardType::Oracle,
+           CardType::Map,    CardType::Kraken, CardType::Anchor};
     for(auto s : suits) {
         for(int v = 2; v <= 7; ++v) {
             switch(s) {
@@ -82,7 +91,7 @@ void Game::_createDeck() {
             }
         }
     }
-    // Mermaid suit: 4, 5, 6, 7, 8, 9
+    //Mermaid suit: 4, 5, 6, 7, 8, 9
     for(int v = 4; v <= 9; ++v) {
         _deck.push_back(new MermaidCard(v));
     }
@@ -96,12 +105,12 @@ void Game::shuffleDeck() {
 
 void Game::start() {
     while(!_isGameOver) {
-        std::cout << "Round " << ((_currentTurn + 1) / 2) << ", Turn "
-                  << _currentTurn << std::endl;
-        std::cout << "Current Player: " << _currentPlayer->name() << std::endl;
+        std::cout << "-- Round " << ((_currentTurn + 1) / 2) << ", Turn "
+                  << _currentTurn << " ---\n";
+        std::cout << _currentPlayer->name() << "'s turn.\n";
         _currentPlayer->printBank();
 
-        // Initial draw
+        //Initial draw
         drawCard(*_currentPlayer);
 
         bool drawing = true;
@@ -118,10 +127,12 @@ void Game::start() {
         }
 
         if(_currentPlayer->isBust()) {
-            std::cout << "BUST!" << std::endl;
+            std::cout << "BUST! " << _currentPlayer->name()
+                      << " loses all cards in play area.\n";
             _currentPlayer->discardPlayArea(_discardPile);
         } else {
             _currentPlayer->bankPlayArea(*this);
+            _currentPlayer->printBank();
         }
 
         nextTurn();
@@ -133,13 +144,10 @@ void Game::drawCard(Player& player) {
         _isGameOver = true;
         return;
     }
-    Card* card = _deck.back();
+    Card* const card = _deck.back();
     _deck.pop_back();
-    std::cout << "Drew: " << card->str() << std::endl;
-    bool bust = player.playCard(card, *this);
-    if(bust) {
-        std::cout << "Bust on drawing " << card->str() << "!" << std::endl;
-    }
+    std::cout << player.name() << " draws a " << card->str() << '\n';
+    player.playCard(card, *this);
 }
 
 void Game::nextTurn() {
@@ -153,26 +161,26 @@ void Game::nextTurn() {
 }
 
 void Game::end() {
-    std::cout << "Game Over!" << std::endl;
+    std::cout << "--- Game Over ---\n";
     _player1->printBank();
     _player2->printBank();
-    int s1 = _player1->calculateScore();
-    int s2 = _player2->calculateScore();
+    int const s1 = _player1->calculateScore();
+    int const s2 = _player2->calculateScore();
     if(s1 > s2) {
-        std::cout << _player1->name() << " wins!" << std::endl;
+        std::cout << _player1->name() << " wins!" << '\n';
     } else if(s2 > s1) {
-        std::cout << _player2->name() << " wins!" << std::endl;
+        std::cout << _player2->name() << " wins!" << '\n';
     } else {
-        std::cout << "It's a tie!" << std::endl;
+        std::cout << "It's a tie!" << '\n';
     }
 }
 
-void Game::_cleanup() {
-    for(auto c : _deck) {
-        delete c;
+void Game::cleanup() {
+    for(auto* card : _deck) {
+        delete card;
     }
-    for(auto c : _discardPile) {
-        delete c;
+    for(auto* card : _discardPile) {
+        delete card;
     }
     _deck.clear();
     _discardPile.clear();
@@ -181,15 +189,17 @@ void Game::_cleanup() {
     _player1 = _player2 = nullptr;
 }
 
-Card* Game::topDeck() { return _deck.empty() ? nullptr : _deck.back(); }
+Card* Game::topDeck() const { return _deck.empty() ? nullptr : _deck.back(); }
 Card* Game::popDeck() {
     if(_deck.empty()) {
         return nullptr;
     }
-    Card* c = _deck.back();
+    Card* const c = _deck.back();
     _deck.pop_back();
     return c;
 }
+
+void Game::discardCard(Card* card) { _discardPile.push_back(card); }
 
 CardCollection& Game::deck() { return _deck; }
 CardCollection& Game::discardPile() { return _discardPile; }
