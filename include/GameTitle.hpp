@@ -1,6 +1,6 @@
 /**
- * @file CannonCard.hpp
- * @brief Declares the CannonCard class for the Cannon suit.
+ * @file GameTitle.hpp
+ * @brief Text Logo for the game
  *
  * Created by Andy Cunningham on 23/3/2025.
  * Updated by Claire Tam on 21/3/2026.
@@ -10,8 +10,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-#ifndef CANNON_CARD_HPP
-#define CANNON_CARD_HPP
+#ifndef GAME_TITLE_H
+#define GAME_TITLE_H
 
 #define GAME_TITLE                                                             \
     "______                  _   ___  ___              _     \n"               \
@@ -26,4 +26,4 @@
     "| |/ / | |  | (_| | \\ V  V /   |_|    |_|\n"                             \
     "|___/  |_|   \\__,_|  \\_/\\_/\n"
 
-#endif // CANNON_CARD_HPP
+#endif // GAME_TITLE_H
