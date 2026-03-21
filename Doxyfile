@@ -3,11 +3,11 @@
 #
 # SPDX-License-Identifier: MIT
 
-PROJECT_NAME           = "Uni Assignment"
+PROJECT_NAME           = "DeadMansDrawPlusPlus"
 OUTPUT_DIRECTORY       = docs/doxygen_output
 FULL_PATH_NAMES        = NO
 
-INPUT                  = . src/ include/
+INPUT                  = . src/
 FILE_PATTERNS          = *.cpp *.h *.hpp
 RECURSIVE              = YES
 

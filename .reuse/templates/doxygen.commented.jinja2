@@ -7,7 +7,8 @@ SPDX-License-Identifier: MIT
  * @brief [Brief description of this file's purpose]
  *
 {% for line in copyright_lines %}
- * {{ line }}{% endfor %}
+ * {{ line }}
+{% endfor %}
  *
  * SPDX-License-Identifier: {{ spdx_expressions | join(' AND ') }}
  */

@@ -19,9 +19,6 @@ This document serves as a guide for the project's technical rubrics, automated t
 
 ## Tooling & Automation
 
-
-## Tooling & Automation
-
 To ensure absolute compliance with the coding standards outlined below, I have implemented several automated workflows:
 
 * **Formatting Enforcement:** Code formatting rules are strictly enforced using `.clang-format` and `.editorconfig`.
@@ -33,6 +30,7 @@ To ensure absolute compliance with the coding standards outlined below, I have i
 **REUSE Annotation Commands:**
 
 For C/C++ files:
+
 ```bash
 find . -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -exec \
     reuse annotate --template=doxygen \
@@ -42,13 +40,13 @@ find . -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \
 ```
 
 For other files:
+
 ```bash
 reuse annotate -r . \
     --copyright="fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>" \
     --copyright="Claire Tam <claire.tam@student.adelaide.edu.au>" \
     --license="MIT"
 ```
-
 
 ---
 
@@ -65,26 +63,26 @@ Any documentation will be generated from source and header files using **Doxygen
 
 ### 2. Formatting
 
-**Whitespace & Line Breaks**
+#### Whitespace & Line Breaks
 
 * Use **4 (four) spaces** for indentation. No tabs.
 * Use blank lines sparingly, only to delimit functions or related statements.
 * When a statement flows onto a second line, commas go at the *end* of the broken line.
 * Similarly, operators must start on a *new* line.
 
-**Comments**
+#### Comments
 
 * Prefer Doxygen comments for functions.
 * Use inline comments above code to describe unobvious logic.
 * **Do not use any space** after the comment delimiter (`//` or `/*`); put the comment directly after (e.g., `//abc` is valid).
 
-**Braces & Parentheses**
+#### Braces & Parentheses
 
 * Place the left curly brace `{` on the end of the opening statement line.
 * **Always** use braces for all control blocks (`if`, `else`, `try`, `catch`, `while`, `for`, etc.), even for single-line statements.
 * Do not use spaces between function or control block names and parentheses (e.g., `function();` not `function ();`).
 
-**Pointers & References**
+#### Pointers & References
 
 * Attach the `*` (asterisk) or `&` (ampersand) directly to the type with no space, then use a single space before the variable name (e.g., `int* number`, `int& number`).
 
@@ -118,14 +116,14 @@ Any documentation will be generated from source and header files using **Doxygen
 
 ### 6. Declarations
 
-**Classes**
+#### Classes
 
 * Use `class` instead of `struct` (Exception: `struct` can be used for passive data-only objects or C-interop).
 * Declare access sections in this strict order: `public`, `protected`, `private`.
 * Do not declare global variables in the class header. If needed for all members, use a `static` member.
 * When overloading operators, ensure their meaning is obvious, unsurprising, and consistent with built-in equivalents.
 
-**Variables**
+#### Variables
 
 * Prefer `auto`, especially for long types (e.g., iterators).
 * Do not declare global variables of class types.
@@ -133,7 +131,7 @@ Any documentation will be generated from source and header files using **Doxygen
 * Give each variable the narrowest scope necessary (prefer initialisation at declaration).
 * In source files (`.cpp`), make all variables `const` unless they specifically need to be mutable.
 
-**Functions**
+#### Functions
 
 * Define parameters in order: **inputs** first, then **outputs**.
 * Use `const` lvalue references for input.
@@ -143,7 +141,7 @@ Any documentation will be generated from source and header files using **Doxygen
 * Prefer small functions; aggregate multiple smaller reusable functions to build complex logic.
 * Avoid ambiguity when using function overloading.
 
-**Namespaces**
+#### Namespaces
 
 * Do not use `using`-directives in header files.
 * Do not rely on `using`-directives when defining classes/functions or accessing global functions; define them in a properly named declarative region instead.
