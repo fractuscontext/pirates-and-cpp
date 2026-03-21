@@ -1,6 +1,10 @@
 /**
  * @file CannonCard.hpp
  * @brief Declares the CannonCard class for the Cannon suit.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef CANNON_CARD_HPP
 #define CANNON_CARD_HPP
