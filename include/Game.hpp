@@ -1,3 +1,7 @@
+/**
+ * @file Game.hpp
+ * @brief Declares the Game singleton that drives Dead Man's Draw++.
+ */
 #ifndef GAME_HPP
 #define GAME_HPP
 
@@ -7,29 +11,125 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief Singleton class responsible for controlling the entire game flow.
+ *
+ * The Game object initialises the deck and players, runs the turn loop,
+ * handles drawing cards, busting, banking, and ultimately determines the winner.
+ * Only one instance may exist at any time (Meyer's singleton).
+ */
 class Game {
 public:
+    /**
+     * @brief Returns the singleton Game instance.
+     *
+     * @return A reference to the single Game object.
+     */
     static Game& instance();
 
+    /**
+     * @brief Initialises a new game: creates and shuffles the deck and sets up two players.
+     *
+     * Any previous game state is cleaned up before reinitialisation.
+     */
     void init();
+
+    /**
+     * @brief Starts and runs the main game loop until the game ends.
+     *
+     * Each iteration represents one player's turn: drawing cards, prompting for
+     * additional draws, handling busts, and banking loot.
+     */
     void start();
+
+    /**
+     * @brief Ends the game and prints final bank summaries and the winner.
+     */
     void end();
 
+    /**
+     * @brief Advances to the next turn, switching the current player.
+     *
+     * If the maximum turn count is reached or the deck is empty, the game ends.
+     */
     void nextTurn();
+
+    /**
+     * @brief Draws the top card from the deck and plays it for the given player.
+     *
+     * If the deck is empty, the game is flagged as over and no card is drawn.
+     *
+     * @param player The player drawing the card.
+     */
     void drawCard(Player& player);
+
+    /**
+     * @brief Moves a card onto the discard pile.
+     *
+     * @param card Pointer to the card to discard.
+     */
     void discardCard(Card* card);
+
+    /**
+     * @brief Shuffles the deck in place using a Mersenne Twister seeded by a random device.
+     */
     void shuffleDeck();
 
+    /**
+     * @brief Returns a pointer to the top card of the deck without removing it.
+     *
+     * @return Pointer to the top card, or nullptr if the deck is empty.
+     */
     Card* topDeck();
+
+    /**
+     * @brief Removes and returns the top card from the deck.
+     *
+     * @return Pointer to the removed card, or nullptr if the deck is empty.
+     */
     Card* popDeck();
 
+    /**
+     * @brief Returns a mutable reference to the deck.
+     *
+     * @return Reference to the card collection representing the deck.
+     */
     CardCollection& deck();
+
+    /**
+     * @brief Returns a mutable reference to the discard pile.
+     *
+     * @return Reference to the card collection representing the discard pile.
+     */
     CardCollection& discardPile();
+
+    /**
+     * @brief Returns a reference to the player whose turn it currently is.
+     *
+     * @return Reference to the current player.
+     */
     Player& currentPlayer();
+
+    /**
+     * @brief Returns a reference to the player who is not currently taking a turn.
+     *
+     * @return Reference to the other player.
+     */
     Player& otherPlayer();
 
-    int turn() const;
-    int round() const;
+    /**
+     * @brief Returns the current turn number (1-based, increments each player's turn).
+     *
+     * @return The current turn number.
+     */
+    [[nodiscard]] int turn() const;
+
+    /**
+     * @brief Returns the current round number (two turns per round).
+     *
+     * @return The current round number.
+     */
+    [[nodiscard]] int round() const;
 
 private:
     Game();
@@ -37,17 +137,17 @@ private:
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
 
-    void _createDeck();
-    void _cleanup();
+    void createDeck();
+    void cleanup();
 
-    CardCollection _deck;
-    CardCollection _discardPile;
-    Player* _player1;
-    Player* _player2;
-    int _currentTurn;
-    int _totalTurns;
-    bool _isGameOver;
-    Player* _currentPlayer;
+    CardCollection _deck;        /**<The shared deck of cards. */
+    CardCollection _discardPile; /**<The shared discard pile. */
+    Player* _player1;            /**<Pointer to the first player. */
+    Player* _player2;            /**<Pointer to the second player. */
+    int _currentTurn;            /**<The current turn number. */
+    int _totalTurns;        /**<Maximum number of turns before the game ends. */
+    bool _isGameOver;       /**<Whether the game has ended. */
+    Player* _currentPlayer; /**<Pointer to the player whose turn it is. */
 };
 
 #endif
