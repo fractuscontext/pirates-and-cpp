@@ -1,3 +1,11 @@
+/**
+ * @file Player.cpp
+ * @brief Implements the Player class.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
+ */
 #include "Player.hpp"
 #include "Card.hpp"
 #include "Game.hpp"
@@ -9,20 +17,20 @@
 Player::Player(std::string name) : _name(std::move(name)) {}
 
 Player::~Player() {
-    for(auto* c : _playArea) {
-        delete c;
+    for(auto* card : _playArea) {
+        delete card;
     }
-    for(auto* c : _bank) {
-        delete c;
+    for(auto* card : _bank) {
+        delete card;
     }
 }
 
 bool Player::playCard(Card* card, Game& game) {
-    // Check if drawing this card causes a bust
+    //Check if drawing this card causes a bust
     for(auto* existing : _playArea) {
         if(existing->type() == card->type()) {
             _playArea.push_back(card);
-            return true; // Bust
+            return true; //Bust
         }
     }
     _playArea.push_back(card);
@@ -42,8 +50,8 @@ bool Player::isBust() const {
 }
 
 void Player::bankPlayArea(Game& game) {
-    // Collect all cards currently in the play area
-    // Chest/Key logic check before adding
+    //Collect all cards currently in the play area
+    //Chest/Key logic check before adding
     bool hasChest = false;
     bool hasKey = false;
     for(auto* card : _playArea) {
@@ -69,9 +77,9 @@ void Player::bankPlayArea(Game& game) {
     if(bonusCount > 0) {
         std::cout << "Chest and Key combination! Drawing " << bonusCount
                   << " bonus cards from discard." << '\n';
-        // Drawing from discard pile to bank
+        //Drawing from discard pile to bank
         for(int i = 0; i < bonusCount && !game.discardPile().empty(); ++i) {
-            Card const* bonus = game.discardPile().back();
+            Card* const bonus = game.discardPile().back();
             game.discardPile().pop_back();
             _bank.push_back(bonus);
             std::cout << "Added " << bonus->str() << " to bank." << '\n';
@@ -102,22 +110,76 @@ int Player::calculateScore() const {
 }
 
 void Player::printBank() const {
-    std::cout << _name << "'s Bank:" << '\n';
-    _printCollection(_bank);
-    std::cout << "Total Score: " << calculateScore() << '\n';
+    std::cout << _name << "'s Bank:\n";
+    if(_bank.empty()) {
+        std::cout << " (empty)\n";
+    } else {
+        std::map<CardType, std::vector<int>> grouped;
+        for(auto* card : _bank) {
+            grouped[card->type()].push_back(card->value());
+        }
+        for(auto& pair : grouped) {
+            std::ranges::sort(pair.second, std::greater<int>());
+            std::string suitName;
+            switch(pair.first) {
+            case CardType::Cannon:
+                suitName = "Cannon";
+                break;
+            case CardType::Chest:
+                suitName = "Chest";
+                break;
+            case CardType::Key:
+                suitName = "Key";
+                break;
+            case CardType::Sword:
+                suitName = "Sword";
+                break;
+            case CardType::Hook:
+                suitName = "Hook";
+                break;
+            case CardType::Oracle:
+                suitName = "Oracle";
+                break;
+            case CardType::Map:
+                suitName = "Map";
+                break;
+            case CardType::Mermaid:
+                suitName = "Mermaid";
+                break;
+            case CardType::Kraken:
+                suitName = "Kraken";
+                break;
+            case CardType::Anchor:
+                suitName = "Anchor";
+                break;
+            }
+            for(size_t i = 0; i < pair.second.size(); ++i) {
+                std::cout << suitName << " (" << pair.second[i] << ")"
+                          << (i == pair.second.size() - 1 ? "" : " ");
+            }
+            std::cout << '\n';
+        }
+    }
+    std::cout << "| Score: " << calculateScore() << '\n';
 }
 
 void Player::printPlayArea() const {
-    std::cout << "Play Area:" << '\n';
-    _printCollection(_playArea);
+    std::cout << _name << "'s Play Area:\n";
+    if(_playArea.empty()) {
+        std::cout << " (empty)\n";
+    } else {
+        for(auto* card : _playArea) {
+            std::cout << card->str() << '\n';
+        }
+    }
 }
 
-void Player::_printCollection(const CardCollection& collection) {
+void Player::printCollection(const CardCollection& collection) {
     if(collection.empty()) {
         std::cout << " (empty)" << '\n';
         return;
     }
-    // Group by suit, sorted by value
+    //Group by suit, sorted by value
     std::map<CardType, std::vector<int>> grouped;
     for(auto* card : collection) {
         grouped[card->type()].push_back(card->value());
@@ -167,3 +229,5 @@ void Player::_printCollection(const CardCollection& collection) {
 const std::string& Player::name() const { return _name; }
 const CardCollection& Player::playArea() const { return _playArea; }
 const CardCollection& Player::bank() const { return _bank; }
+CardCollection& Player::playArea() { return _playArea; }
+CardCollection& Player::bank() { return _bank; }

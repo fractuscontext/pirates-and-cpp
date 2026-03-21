@@ -1,6 +1,10 @@
 /**
  * @file Card.hpp
  * @brief Defines the abstract Card base class and the CardType enumeration.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef CARD_HPP
 #define CARD_HPP
@@ -76,7 +80,10 @@ public:
      * @param game   The current game instance.
      * @param player The player who is banking this card.
      */
-    virtual void willAddToBank(Game& /*game*/, Player& /*player*/) {}
+    virtual void willAddToBank(Game& game, Player& player) {
+        (void)game;
+        (void)player;
+    }
 
     /**
      * @brief Returns the suit type of this card.

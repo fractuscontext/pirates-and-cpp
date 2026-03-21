@@ -1,6 +1,10 @@
 /**
  * @file Player.hpp
  * @brief Declares the Player class representing a player in Dead Man's Draw++.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
@@ -26,7 +30,7 @@ public:
      *
      * @param name The player's display name.
      */
-    explicit Player(const std::string& name);
+    explicit Player(std::string name);
 
     /**
      * @brief Destructor. Deletes all dynamically allocated cards in the play area and bank.
