@@ -1,6 +1,10 @@
 /**
  * @file AnchorCard.hpp
  * @brief Declares the AnchorCard class for the Anchor suit.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef ANCHOR_CARD_HPP
 #define ANCHOR_CARD_HPP
