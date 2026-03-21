@@ -1,6 +1,10 @@
 /**
  * @file SwordCard.hpp
  * @brief Declares the SwordCard class for the Sword suit.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef SWORD_CARD_HPP
 #define SWORD_CARD_HPP

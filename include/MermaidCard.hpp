@@ -1,6 +1,10 @@
 /**
  * @file MermaidCard.hpp
  * @brief Declares the MermaidCard class for the Mermaid suit.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef MERMAID_CARD_HPP
 #define MERMAID_CARD_HPP
