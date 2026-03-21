@@ -1,6 +1,10 @@
 /**
  * @file Game.hpp
  * @brief Declares the Game singleton that drives Dead Man's Draw++.
+ *
+ * SPDX-FileCopyrightText: 2026 Claire Tam <claire.tam@student.adelaide.edu.au>
+ * SPDX-FileCopyrightText: 2026 fractuscontext (aka Claire T.) <106440141+fractuscontext@users.noreply.github.com>
+ * SPDX-License-Identifier: MIT
  */
 #ifndef GAME_HPP
 #define GAME_HPP
@@ -80,7 +84,7 @@ public:
      *
      * @return Pointer to the top card, or nullptr if the deck is empty.
      */
-    Card* topDeck();
+    [[nodiscard]] Card* topDeck() const;
 
     /**
      * @brief Removes and returns the top card from the deck.

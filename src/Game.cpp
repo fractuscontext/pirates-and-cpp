@@ -105,9 +105,9 @@ void Game::shuffleDeck() {
 
 void Game::start() {
     while(!_isGameOver) {
-        std::cout << "Round " << ((_currentTurn + 1) / 2) << ", Turn "
-                  << _currentTurn << '\n';
-        std::cout << "Current Player: " << _currentPlayer->name() << '\n';
+        std::cout << "-- Round " << ((_currentTurn + 1) / 2) << ", Turn "
+                  << _currentTurn << " ---\n";
+        std::cout << _currentPlayer->name() << "'s turn.\n";
         _currentPlayer->printBank();
 
         //Initial draw
@@ -127,7 +127,8 @@ void Game::start() {
         }
 
         if(_currentPlayer->isBust()) {
-            std::cout << "BUST!" << '\n';
+            std::cout << "BUST! " << _currentPlayer->name()
+                      << " loses all cards in play area.\n";
             _currentPlayer->discardPlayArea(_discardPile);
         } else {
             _currentPlayer->bankPlayArea(*this);
@@ -145,11 +146,8 @@ void Game::drawCard(Player& player) {
     }
     Card* const card = _deck.back();
     _deck.pop_back();
-    std::cout << "Drew: " << card->str() << '\n';
-    bool const bust = player.playCard(card, *this);
-    if(bust) {
-        std::cout << "Bust on drawing " << card->str() << "!" << '\n';
-    }
+    std::cout << player.name() << " draws a " << card->str() << '\n';
+    player.playCard(card, *this);
 }
 
 void Game::nextTurn() {
@@ -163,7 +161,7 @@ void Game::nextTurn() {
 }
 
 void Game::end() {
-    std::cout << "Game Over!" << '\n';
+    std::cout << "--- Game Over ---\n";
     _player1->printBank();
     _player2->printBank();
     int const s1 = _player1->calculateScore();
@@ -178,11 +176,11 @@ void Game::end() {
 }
 
 void Game::cleanup() {
-    for(auto* c : _deck) {
-        delete c;
+    for(auto* card : _deck) {
+        delete card;
     }
-    for(auto* c : _discardPile) {
-        delete c;
+    for(auto* card : _discardPile) {
+        delete card;
     }
     _deck.clear();
     _discardPile.clear();
