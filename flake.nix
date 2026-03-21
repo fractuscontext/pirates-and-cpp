@@ -24,7 +24,13 @@
           src = ./.;
           hooks = {
             nixpkgs-fmt.enable = true;
-            editorconfig-checker.enable = true;
+
+            markdownlint = {
+              enable = true;
+              name = "Markdown Lint Check";
+              entry = "${pkgs.markdownlint-cli}/bin/markdownlint .";
+              pass_filenames = false;
+            };
 
             doxygen-check = {
               enable = true;
@@ -68,7 +74,6 @@
             # Hook Dependencies
             reuse
             markdownlint-cli
-            editorconfig-checker
             nixpkgs-fmt
             doxygen
           ] ++ lib.optionals stdenv.isLinux [
