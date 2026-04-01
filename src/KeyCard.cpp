@@ -1,4 +1,3 @@
-#include <iostream>
 /**
  * @file KeyCard.cpp
  * @brief Implements the KeyCard; ability fires at banking time via Player::bankPlayArea().
@@ -8,6 +7,7 @@
  * SPDX-License-Identifier: MIT
  */
 #include "KeyCard.hpp"
+#include <iostream>
 
 KeyCard::KeyCard(int val) : Card(CardType::Key, val) {}
 

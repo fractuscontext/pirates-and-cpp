@@ -11,6 +11,7 @@
 #include "CannonCard.hpp"
 #include "ChestCard.hpp"
 #include "HookCard.hpp"
+#include "InputHelper.hpp"
 #include "KeyCard.hpp"
 #include "KrakenCard.hpp"
 #include "MapCard.hpp"
@@ -116,10 +117,7 @@ void Game::start() {
         bool drawing = true;
         while(drawing && !_isGameOver && !_currentPlayer->isBust()) {
             _currentPlayer->printPlayArea();
-            std::cout << "Draw again? (y/n): ";
-            std::string choice;
-            std::cin >> choice;
-            if(choice == "y") {
+            if(InputHelper::askYesNo("Draw again? (y/n): ")) {
                 drawCard(*_currentPlayer);
             } else {
                 drawing = false;

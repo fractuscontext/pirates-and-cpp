@@ -8,10 +8,10 @@
  */
 #include "HookCard.hpp"
 #include "Game.hpp"
+#include "InputHelper.hpp"
 #include "Player.hpp"
 #include <algorithm>
 #include <iostream>
-#include <limits>
 #include <map>
 #include <utility>
 #include <vector>
@@ -45,15 +45,8 @@ void HookCard::play(Game& game, Player& player) {
         std::cout << i++ << ": " << card->str() << '\n';
     }
 
-    int choice = 0;
-    std::cout << "Choice: ";
-    if(!(std::cin >> choice) || choice < 0
-       || std::cmp_greater_equal(choice, availableTypes.size())) {
-        std::cout << "Invalid choice. Skipping Hook ability." << '\n';
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return;
-    }
+    int const choice
+        = InputHelper::askChoice("Choice: ", availableTypes.size());
 
     CardType const chosenType = availableTypes[choice];
     Card* const toPlay = topCards[chosenType];

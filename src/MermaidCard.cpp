@@ -1,4 +1,3 @@
-#include <iostream>
 /**
  * @file MermaidCard.cpp
  * @brief Implements the MermaidCard; no ability, higher point values (4–9).
@@ -8,6 +7,7 @@
  * SPDX-License-Identifier: MIT
  */
 #include "MermaidCard.hpp"
+#include <iostream>
 
 MermaidCard::MermaidCard(int val) : Card(CardType::Mermaid, val) {}
 

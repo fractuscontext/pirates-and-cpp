@@ -8,10 +8,10 @@
  */
 #include "MapCard.hpp"
 #include "Game.hpp"
+#include "InputHelper.hpp"
 #include "Player.hpp"
 #include <algorithm>
 #include <iostream>
-#include <limits>
 #include <utility>
 #include <vector>
 
@@ -37,20 +37,7 @@ void MapCard::play(Game& game, Player& player) {
         std::cout << i << ": " << options.back()->str() << '\n';
     }
 
-    int choice = 0;
-    std::cout << "Choice: ";
-    if(!(std::cin >> choice) || choice < 0
-       || std::cmp_greater_equal(choice, options.size())) {
-        std::cout << "Invalid choice. Skipping Map ability. Cards returned to "
-                     "discard."
-                  << '\n';
-        for(auto* card : options) {
-            discard.push_back(card);
-        }
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return;
-    }
+    int const choice = InputHelper::askChoice("Choice: ", options.size());
 
     Card* const chosen = options[choice];
     std::cout << "Playing " << chosen->str() << " from discard!" << '\n';
