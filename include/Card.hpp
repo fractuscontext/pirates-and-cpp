@@ -9,6 +9,7 @@
 #ifndef CARD_HPP
 #define CARD_HPP
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -18,7 +19,7 @@ class Player;
 /**
  * @brief Enumeration of all card suits in Dead Man's Draw++.
  */
-enum class CardType {
+enum class CardType : std::uint8_t {
     Cannon, /**<Discards the top card of a chosen suit from the opponent's bank. */
     Chest, /**<No immediate effect; grants bonus draws when banked with a Key. */
     Key, /**<No immediate effect; activates the Chest bonus when banked together. */
@@ -52,6 +53,11 @@ public:
      * @brief Virtual destructor.
      */
     virtual ~Card();
+
+    Card(const Card&) = delete;
+    Card& operator=(const Card&) = delete;
+    Card(Card&&) = delete;
+    Card& operator=(Card&&) = delete;
 
     /**
      * @brief Returns a human-readable string for this card.
@@ -99,7 +105,7 @@ public:
      */
     [[nodiscard]] int value() const;
 
-protected:
+private:
     CardType _type; /**<The suit of this card. */
     int _value;     /**<The point value of this card. */
 };

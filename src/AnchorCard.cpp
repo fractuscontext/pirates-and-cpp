@@ -14,7 +14,7 @@
 AnchorCard::AnchorCard(int val) : Card(CardType::Anchor, val) {}
 
 std::string AnchorCard::str() const {
-    return "Anchor (" + std::to_string(_value) + ")";
+    return "Anchor (" + std::to_string(value()) + ")";
 }
 
 void AnchorCard::play(Game& game, Player& player) {

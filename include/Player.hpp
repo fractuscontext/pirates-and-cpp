@@ -10,9 +10,7 @@
 #define PLAYER_HPP
 
 #include "Card.hpp"
-#include <map>
 #include <string>
-#include <vector>
 
 class Game;
 
@@ -26,16 +24,19 @@ class Game;
 class Player {
 public:
     /**
-     * @brief Constructs a Player with the given name.
-     *
-     * @param name The player's display name.
+     * @brief Constructs a Player with a randomly selected name.
      */
-    explicit Player(std::string name);
+    Player();
 
     /**
      * @brief Destructor. Deletes all dynamically allocated cards in the play area and bank.
      */
     ~Player();
+
+    Player(const Player&) = delete;
+    Player& operator=(const Player&) = delete;
+    Player(Player&&) = delete;
+    Player& operator=(Player&&) = delete;
 
     /**
      * @brief Adds a card to the play area and, if no bust, triggers its ability.

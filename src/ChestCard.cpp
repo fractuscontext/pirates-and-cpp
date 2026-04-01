@@ -12,7 +12,7 @@
 ChestCard::ChestCard(int val) : Card(CardType::Chest, val) {}
 
 std::string ChestCard::str() const {
-    return "Chest (" + std::to_string(_value) + ")";
+    return "Chest (" + std::to_string(value()) + ")";
 }
 
 void ChestCard::play(Game& game, Player& player) {

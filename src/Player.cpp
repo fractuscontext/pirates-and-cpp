@@ -9,12 +9,20 @@
 #include "Player.hpp"
 #include "Card.hpp"
 #include "Game.hpp"
-#include <algorithm>
+#include <array>
+#include <cstdlib>
 #include <iostream>
+#include <map>
 #include <set>
-#include <utility>
 
-Player::Player(std::string name) : _name(std::move(name)) {}
+Player::Player() {
+    std::array<std::string, 10> const names
+        = {"Sam", "Billy", "Jen",   "Bob",  "Sally",
+           "Joe", "Sue",   "Sasha", "Tina", "Marge"};
+    _name = names.at(
+        rand()
+        % 10); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+}
 
 Player::~Player() {
     for(auto* card : _playArea) {
@@ -65,7 +73,7 @@ void Player::bankPlayArea(Game& game) {
 
     int bonusCount = 0;
     if(hasChest && hasKey) {
-        bonusCount = _playArea.size();
+        bonusCount = static_cast<int>(_playArea.size());
     }
 
     for(auto* card : _playArea) {
@@ -119,7 +127,7 @@ void Player::printBank() const {
             grouped[card->type()].push_back(card->value());
         }
         for(auto& pair : grouped) {
-            std::ranges::sort(pair.second, std::greater<int>());
+            std::ranges::sort(pair.second, std::greater<>());
             std::string suitName;
             switch(pair.first) {
             case CardType::Cannon:
@@ -185,7 +193,7 @@ void Player::printCollection(const CardCollection& collection) {
         grouped[card->type()].push_back(card->value());
     }
     for(auto& pair : grouped) {
-        std::ranges::sort(pair.second, std::greater<int>());
+        std::ranges::sort(pair.second, std::greater<>());
         switch(pair.first) {
         case CardType::Cannon:
             std::cout << "Cannon: ";

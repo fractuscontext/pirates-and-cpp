@@ -12,7 +12,7 @@
 KeyCard::KeyCard(int val) : Card(CardType::Key, val) {}
 
 std::string KeyCard::str() const {
-    return "Key (" + std::to_string(_value) + ")";
+    return "Key (" + std::to_string(value()) + ")";
 }
 
 void KeyCard::play(Game& game, Player& player) {

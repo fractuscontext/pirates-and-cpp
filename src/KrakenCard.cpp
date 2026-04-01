@@ -13,7 +13,7 @@
 KrakenCard::KrakenCard(int val) : Card(CardType::Kraken, val) {}
 
 std::string KrakenCard::str() const {
-    return "Kraken (" + std::to_string(_value) + ")";
+    return "Kraken (" + std::to_string(value()) + ")";
 }
 
 void KrakenCard::play(Game& game, Player& player) {

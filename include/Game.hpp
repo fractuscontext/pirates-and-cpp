@@ -11,9 +11,6 @@
 
 #include "Card.hpp"
 #include "Player.hpp"
-#include <random>
-#include <string>
-#include <vector>
 
 /**
  * @brief Singleton class responsible for controlling the entire game flow.
@@ -135,23 +132,27 @@ public:
      */
     [[nodiscard]] int round() const;
 
+    Game(const Game&) = delete;
+    Game& operator=(const Game&) = delete;
+    Game(Game&&) = delete;
+    Game& operator=(Game&&) = delete;
+
 private:
     Game();
     ~Game();
-    Game(const Game&) = delete;
-    Game& operator=(const Game&) = delete;
 
     void createDeck();
     void cleanup();
 
     CardCollection _deck;        /**<The shared deck of cards. */
     CardCollection _discardPile; /**<The shared discard pile. */
-    Player* _player1;            /**<Pointer to the first player. */
-    Player* _player2;            /**<Pointer to the second player. */
-    int _currentTurn;            /**<The current turn number. */
-    int _totalTurns;        /**<Maximum number of turns before the game ends. */
-    bool _isGameOver;       /**<Whether the game has ended. */
-    Player* _currentPlayer; /**<Pointer to the player whose turn it is. */
+    Player* _player1{nullptr};   /**<Pointer to the first player. */
+    Player* _player2{nullptr};   /**<Pointer to the second player. */
+    int _currentTurn{1};         /**<The current turn number. */
+    int _totalTurns{20}; /**<Maximum number of turns before the game ends. */
+    bool _isGameOver{false}; /**<Whether the game has ended. */
+    Player* _currentPlayer{
+        nullptr}; /**<Pointer to the player whose turn it is. */
 };
 
 #endif

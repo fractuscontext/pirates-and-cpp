@@ -13,13 +13,12 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
-#include <utility>
 #include <vector>
 
 HookCard::HookCard(int val) : Card(CardType::Hook, val) {}
 
 std::string HookCard::str() const {
-    return "Hook (" + std::to_string(_value) + ")";
+    return "Hook (" + std::to_string(value()) + ")";
 }
 
 void HookCard::play(Game& game, Player& player) {
@@ -39,10 +38,10 @@ void HookCard::play(Game& game, Player& player) {
 
     std::cout << "Hook: Which suit to play from your bank?" << '\n';
     std::vector<CardType> availableTypes;
-    int i = 0;
+    int idx = 0;
     for(auto const& [type, card] : topCards) {
         availableTypes.push_back(type);
-        std::cout << i++ << ": " << card->str() << '\n';
+        std::cout << idx++ << ": " << card->str() << '\n';
     }
 
     int const choice
@@ -52,9 +51,9 @@ void HookCard::play(Game& game, Player& player) {
     Card* const toPlay = topCards[chosenType];
 
     auto& mutableBank = player.bank();
-    const auto it = std::ranges::find(mutableBank, toPlay);
-    if(it != mutableBank.end()) {
-        mutableBank.erase(it);
+    const auto iter = std::ranges::find(mutableBank, toPlay);
+    if(iter != mutableBank.end()) {
+        mutableBank.erase(iter);
         std::cout << "Playing " << toPlay->str() << " from bank!" << '\n';
         bool const bust = player.playCard(toPlay, game);
         if(bust) {

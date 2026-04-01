@@ -19,12 +19,11 @@
 #include "OracleCard.hpp"
 #include "SwordCard.hpp"
 #include <algorithm>
+#include <array>
 #include <iostream>
 #include <random>
 
-Game::Game()
-    : _player1(nullptr), _player2(nullptr), _currentTurn(1), _totalTurns(20),
-      _isGameOver(false), _currentPlayer(nullptr) {}
+Game::Game() = default;
 
 Game::~Game() { cleanup(); }
 
@@ -38,14 +37,8 @@ void Game::init() {
     createDeck();
     shuffleDeck();
 
-    std::string const names[] = {"Sam", "Billy", "Jen",   "Bob",  "Sally",
-                                 "Joe", "Sue",   "Sasha", "Tina", "Marge"};
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, 9);
-
-    _player1 = new Player(names[dist(gen)]);
-    _player2 = new Player(names[dist(gen)]);
+    _player1 = new Player();
+    _player2 = new Player();
     _currentPlayer = _player1;
 }
 
@@ -53,39 +46,39 @@ void Game::createDeck() {
     //54 cards, 9 suits, 6 cards each
     //Suits: Cannon, Chest, Key, Sword, Hook, Oracle, Map, Mermaid, Kraken (Anchor bonus)
     //Values 2-7 for most suits. Mermaid 4-9.
-    CardType const suits[]
+    std::array<CardType, 9> const suits
         = {CardType::Cannon, CardType::Chest,  CardType::Key,
            CardType::Sword,  CardType::Hook,   CardType::Oracle,
            CardType::Map,    CardType::Kraken, CardType::Anchor};
-    for(auto s : suits) {
-        for(int v = 2; v <= 7; ++v) {
-            switch(s) {
+    for(auto suit : suits) {
+        for(int val = 2; val <= 7; ++val) {
+            switch(suit) {
             case CardType::Cannon:
-                _deck.push_back(new CannonCard(v));
+                _deck.push_back(new CannonCard(val));
                 break;
             case CardType::Chest:
-                _deck.push_back(new ChestCard(v));
+                _deck.push_back(new ChestCard(val));
                 break;
             case CardType::Key:
-                _deck.push_back(new KeyCard(v));
+                _deck.push_back(new KeyCard(val));
                 break;
             case CardType::Sword:
-                _deck.push_back(new SwordCard(v));
+                _deck.push_back(new SwordCard(val));
                 break;
             case CardType::Hook:
-                _deck.push_back(new HookCard(v));
+                _deck.push_back(new HookCard(val));
                 break;
             case CardType::Oracle:
-                _deck.push_back(new OracleCard(v));
+                _deck.push_back(new OracleCard(val));
                 break;
             case CardType::Map:
-                _deck.push_back(new MapCard(v));
+                _deck.push_back(new MapCard(val));
                 break;
             case CardType::Kraken:
-                _deck.push_back(new KrakenCard(v));
+                _deck.push_back(new KrakenCard(val));
                 break;
             case CardType::Anchor:
-                _deck.push_back(new AnchorCard(v));
+                _deck.push_back(new AnchorCard(val));
                 break;
             default:
                 break;
@@ -93,15 +86,15 @@ void Game::createDeck() {
         }
     }
     //Mermaid suit: 4, 5, 6, 7, 8, 9
-    for(int v = 4; v <= 9; ++v) {
-        _deck.push_back(new MermaidCard(v));
+    for(int val = 4; val <= 9; ++val) {
+        _deck.push_back(new MermaidCard(val));
     }
 }
 
 void Game::shuffleDeck() {
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(_deck.begin(), _deck.end(), g);
+    std::random_device randomDevice;
+    std::mt19937 gen(randomDevice());
+    std::shuffle(_deck.begin(), _deck.end(), gen);
 }
 
 void Game::start() {
@@ -162,11 +155,11 @@ void Game::end() {
     std::cout << "--- Game Over ---\n";
     _player1->printBank();
     _player2->printBank();
-    int const s1 = _player1->calculateScore();
-    int const s2 = _player2->calculateScore();
-    if(s1 > s2) {
+    int const score1 = _player1->calculateScore();
+    int const score2 = _player2->calculateScore();
+    if(score1 > score2) {
         std::cout << _player1->name() << " wins!" << '\n';
-    } else if(s2 > s1) {
+    } else if(score2 > score1) {
         std::cout << _player2->name() << " wins!" << '\n';
     } else {
         std::cout << "It's a tie!" << '\n';
@@ -192,9 +185,9 @@ Card* Game::popDeck() {
     if(_deck.empty()) {
         return nullptr;
     }
-    Card* const c = _deck.back();
+    Card* const card = _deck.back();
     _deck.pop_back();
-    return c;
+    return card;
 }
 
 void Game::discardCard(Card* card) { _discardPile.push_back(card); }

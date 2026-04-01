@@ -13,13 +13,12 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
-#include <utility>
 #include <vector>
 
 SwordCard::SwordCard(int val) : Card(CardType::Sword, val) {}
 
 std::string SwordCard::str() const {
-    return "Sword (" + std::to_string(_value) + ")";
+    return "Sword (" + std::to_string(value()) + ")";
 }
 
 void SwordCard::play(Game& game, Player& player) {
@@ -42,10 +41,10 @@ void SwordCard::play(Game& game, Player& player) {
     std::cout << "Sword: Which suit to steal from " << other.name()
               << "'s bank?" << '\n';
     std::vector<CardType> availableTypes;
-    int i = 0;
+    int idx = 0;
     for(auto const& [type, card] : topCards) {
         availableTypes.push_back(type);
-        std::cout << i++ << ": " << card->str() << '\n';
+        std::cout << idx++ << ": " << card->str() << '\n';
     }
 
     int const choice
@@ -55,9 +54,9 @@ void SwordCard::play(Game& game, Player& player) {
     Card* const toSteal = topCards[chosenType];
 
     auto& mutableOtherBank = other.bank();
-    const auto it = std::ranges::find(mutableOtherBank, toSteal);
-    if(it != mutableOtherBank.end()) {
-        mutableOtherBank.erase(it);
+    const auto iter = std::ranges::find(mutableOtherBank, toSteal);
+    if(iter != mutableOtherBank.end()) {
+        mutableOtherBank.erase(iter);
         std::cout << "Stole " << toSteal->str() << " from " << other.name()
                   << "!" << '\n';
         bool const bust = player.playCard(toSteal, game);

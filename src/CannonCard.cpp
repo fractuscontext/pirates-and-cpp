@@ -13,13 +13,12 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
-#include <utility>
 #include <vector>
 
 CannonCard::CannonCard(int val) : Card(CardType::Cannon, val) {}
 
 std::string CannonCard::str() const {
-    return "Cannon (" + std::to_string(_value) + ")";
+    return "Cannon (" + std::to_string(value()) + ")";
 }
 
 void CannonCard::play(Game& game, Player& player) {
@@ -43,10 +42,10 @@ void CannonCard::play(Game& game, Player& player) {
     std::cout << "Cannon: Which suit to discard from " << other.name()
               << "'s bank?" << '\n';
     std::vector<CardType> availableTypes;
-    int i = 0;
+    int idx = 0;
     for(auto const& [type, card] : topCards) {
         availableTypes.push_back(type);
-        std::cout << i++ << ": " << card->str() << '\n';
+        std::cout << idx++ << ": " << card->str() << '\n';
     }
 
     int const choice

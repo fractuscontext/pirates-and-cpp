@@ -1,7 +1,7 @@
 version = 1
 
 [[annotations]]
-path = ["**/*.lock", ".gitignore"]
+path = ["**/*.lock", ".gitignore", ".vscode/*.json"]
 SPDX-FileCopyrightText = "None"
 SPDX-License-Identifier = "CC0-1.0"
 precedence = "override"

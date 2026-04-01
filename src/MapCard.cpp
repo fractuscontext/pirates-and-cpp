@@ -18,7 +18,7 @@
 MapCard::MapCard(int val) : Card(CardType::Map, val) {}
 
 std::string MapCard::str() const {
-    return "Map (" + std::to_string(_value) + ")";
+    return "Map (" + std::to_string(value()) + ")";
 }
 
 void MapCard::play(Game& game, Player& player) {
