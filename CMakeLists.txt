@@ -29,3 +29,39 @@ if(MSVC)
 else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 endif()
+
+# TESTING
+option(BUILD_TESTS "Build unit tests" ON)
+if(BUILD_TESTS)
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    )
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+    enable_testing()
+
+    # Collect all source files except main.cpp for the test library
+    file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+    list(FILTER LIB_SOURCES EXCLUDE REGEX "src/main\\.cpp$")
+
+    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "tests/*.cpp")
+
+    add_executable(DeadMansDrawTests ${TEST_SOURCES} ${LIB_SOURCES} ${HEADERS})
+    target_include_directories(DeadMansDrawTests PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
+    target_link_libraries(DeadMansDrawTests PRIVATE GTest::gtest_main)
+
+    if(MSVC)
+        target_compile_options(DeadMansDrawTests PRIVATE /W4 /WX /permissive-)
+    else()
+        target_compile_options(DeadMansDrawTests PRIVATE -Wall -Wextra -pedantic)
+    endif()
+
+    include(GoogleTest)
+    gtest_discover_tests(DeadMansDrawTests)
+endif()
