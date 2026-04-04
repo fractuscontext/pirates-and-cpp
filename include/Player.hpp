@@ -9,6 +9,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include "BustChecker.hpp"
 #include "Card.hpp"
 #include <string>
 
@@ -27,6 +28,13 @@ public:
      * @brief Constructs a Player with a randomly selected name.
      */
     Player();
+
+    /**
+     * @brief Constructs a Player with the given name, testing purpose only.
+     *
+     * @param name The display name for this player.
+     */
+    explicit Player(std::string name);
 
     /**
      * @brief Destructor. Deletes all dynamically allocated cards in the play area and bank.
@@ -134,6 +142,7 @@ private:
     std::string _name;        /**<The player's display name. */
     CardCollection _playArea; /**<Cards in the current play area. */
     CardCollection _bank;     /**<Cards permanently banked. */
+    BustChecker _bustChecker; /**<Tracks duplicate suits for bust detection. */
 
     /**
      * @brief Prints a card collection grouped by suit, with values sorted descending.

@@ -23,11 +23,11 @@ namespace InputHelper {
 bool askYesNo(const std::string& prompt);
 
 /**
- * @brief Prompts for an integer in [0, count) until a valid response is given.
+ * @brief Prompts for an integer in [1, count] until a valid response is given.
  *
  * @param prompt The prompt text to display.
- * @param count  The number of valid options (0 .. count-1).
- * @return The validated choice.
+ * @param count  The number of valid options (user enters 1 .. count).
+ * @return The validated choice as a 0-based index (0 .. count-1).
  */
 int askChoice(const std::string& prompt, std::size_t count);
 

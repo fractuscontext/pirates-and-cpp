@@ -11,6 +11,7 @@
 
 #include "Card.hpp"
 #include "Player.hpp"
+#include "RandomProvider.hpp"
 
 /**
  * @brief Singleton class responsible for controlling the entire game flow.
@@ -34,6 +35,26 @@ public:
      * Any previous game state is cleaned up before reinitialisation.
      */
     void init();
+
+    /**
+     * @brief Initialises a new game with explicit player names.
+     *
+     * Useful for deterministic testing — names are not randomly chosen.
+     *
+     * @param name1 Name for the first player.
+     * @param name2 Name for the second player.
+     */
+    void init(const std::string& name1, const std::string& name2);
+
+    /**
+     * @brief Sets a custom random provider for shuffling and name generation.
+     *
+     * Pass nullptr to revert to the default provider. Must be called before
+     * init() for the provider to take effect.
+     *
+     * @param provider Pointer to a provider (Game does NOT take ownership).
+     */
+    void setRandomProvider(RandomProvider* provider);
 
     /**
      * @brief Starts and runs the main game loop until the game ends.
@@ -143,6 +164,7 @@ private:
 
     void createDeck();
     void cleanup();
+    RandomProvider& randomProvider();
 
     CardCollection _deck;        /**<The shared deck of cards. */
     CardCollection _discardPile; /**<The shared discard pile. */
@@ -153,6 +175,10 @@ private:
     bool _isGameOver{false}; /**<Whether the game has ended. */
     Player* _currentPlayer{
         nullptr}; /**<Pointer to the player whose turn it is. */
+    RandomProvider* _randomProvider{
+        nullptr}; /**<Injected RNG (nullptr = use default). */
+    DefaultRandomProvider
+        _defaultProvider; /**<Owned default provider instance. */
 };
 
 #endif
