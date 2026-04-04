@@ -29,15 +29,15 @@ int askChoice(const std::string& prompt, std::size_t count) {
     int choice = 0;
     while(true) {
         std::cout << prompt;
-        if(!(std::cin >> choice) || choice < 0
-           || std::cmp_greater_equal(choice, count)) {
-            std::cout << "Invalid choice. Please enter a number between 0 and "
-                      << count - 1 << "." << '\n';
+        if(!(std::cin >> choice) || choice < 1
+           || std::cmp_greater(choice, count)) {
+            std::cout << "Invalid choice. Please enter a number between 1 and "
+                      << count << "." << '\n';
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
         }
-        return choice;
+        return choice - 1;
     }
 }
 

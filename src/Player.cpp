@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <map>
-#include <set>
+#include <utility>
 
 Player::Player() {
     std::array<std::string, 10> const names
@@ -23,6 +23,8 @@ Player::Player() {
         rand()
         % 10); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 }
+
+Player::Player(std::string name) : _name(std::move(name)) {}
 
 Player::~Player() {
     for(auto* card : _playArea) {
@@ -34,28 +36,20 @@ Player::~Player() {
 }
 
 bool Player::playCard(Card* card, Game& game) {
-    //Check if drawing this card causes a bust
-    for(auto* existing : _playArea) {
-        if(existing->type() == card->type()) {
-            _playArea.push_back(card);
-            return true; //Bust
-        }
-    }
+    bool const bust = _bustChecker.wouldBust(card->type());
     _playArea.push_back(card);
+    _bustChecker.recordCard(card->type());
+
+    if(bust) {
+        _bustChecker.setBust();
+        return true;
+    }
+
     card->play(game, *this);
     return false;
 }
 
-bool Player::isBust() const {
-    std::set<CardType> seen;
-    for(auto* card : _playArea) {
-        if(seen.contains(card->type())) {
-            return true;
-        }
-        seen.insert(card->type());
-    }
-    return false;
-}
+bool Player::isBust() const { return _bustChecker.isBust(); }
 
 void Player::bankPlayArea(Game& game) {
     //Collect all cards currently in the play area
@@ -81,17 +75,19 @@ void Player::bankPlayArea(Game& game) {
         _bank.push_back(card);
     }
     _playArea.clear();
+    _bustChecker.reset();
 
     if(bonusCount > 0) {
-        std::cout << "Chest and Key combination! Drawing " << bonusCount
-                  << " bonus cards from discard." << '\n';
+        std::cout << "\nChest and Key combination! Drawing " << bonusCount
+                  << " bonus cards from discard.\n";
         //Drawing from discard pile to bank
         for(int i = 0; i < bonusCount && !game.discardPile().empty(); ++i) {
             Card* const bonus = game.discardPile().back();
             game.discardPile().pop_back();
             _bank.push_back(bonus);
-            std::cout << "Added " << bonus->str() << " to bank." << '\n';
+            std::cout << "  Added " << bonus->str() << " to bank.\n";
         }
+        std::cout << '\n';
     }
 }
 
@@ -100,6 +96,7 @@ void Player::discardPlayArea(CardCollection& discardPile) {
         discardPile.push_back(card);
     }
     _playArea.clear();
+    _bustChecker.reset();
 }
 
 int Player::calculateScore() const {
@@ -119,67 +116,13 @@ int Player::calculateScore() const {
 
 void Player::printBank() const {
     std::cout << _name << "'s Bank:\n";
-    if(_bank.empty()) {
-        std::cout << " (empty)\n";
-    } else {
-        std::map<CardType, std::vector<int>> grouped;
-        for(auto* card : _bank) {
-            grouped[card->type()].push_back(card->value());
-        }
-        for(auto& pair : grouped) {
-            std::ranges::sort(pair.second, std::greater<>());
-            std::string suitName;
-            switch(pair.first) {
-            case CardType::Cannon:
-                suitName = "Cannon";
-                break;
-            case CardType::Chest:
-                suitName = "Chest";
-                break;
-            case CardType::Key:
-                suitName = "Key";
-                break;
-            case CardType::Sword:
-                suitName = "Sword";
-                break;
-            case CardType::Hook:
-                suitName = "Hook";
-                break;
-            case CardType::Oracle:
-                suitName = "Oracle";
-                break;
-            case CardType::Map:
-                suitName = "Map";
-                break;
-            case CardType::Mermaid:
-                suitName = "Mermaid";
-                break;
-            case CardType::Kraken:
-                suitName = "Kraken";
-                break;
-            case CardType::Anchor:
-                suitName = "Anchor";
-                break;
-            }
-            for(size_t i = 0; i < pair.second.size(); ++i) {
-                std::cout << suitName << " (" << pair.second[i] << ")"
-                          << (i == pair.second.size() - 1 ? "" : " ");
-            }
-            std::cout << '\n';
-        }
-    }
-    std::cout << "| Score: " << calculateScore() << '\n';
+    printCollection(_bank);
+    std::cout << "| Score: " << calculateScore() << "\n\n";
 }
 
 void Player::printPlayArea() const {
     std::cout << _name << "'s Play Area:\n";
-    if(_playArea.empty()) {
-        std::cout << " (empty)\n";
-    } else {
-        for(auto* card : _playArea) {
-            std::cout << card->str() << '\n';
-        }
-    }
+    printCollection(_playArea);
 }
 
 void Player::printCollection(const CardCollection& collection) {
@@ -194,41 +137,46 @@ void Player::printCollection(const CardCollection& collection) {
     }
     for(auto& pair : grouped) {
         std::ranges::sort(pair.second, std::greater<>());
+        std::string suitName;
         switch(pair.first) {
         case CardType::Cannon:
-            std::cout << "Cannon: ";
+            suitName = "Cannon";
             break;
         case CardType::Chest:
-            std::cout << "Chest: ";
+            suitName = "Chest";
             break;
         case CardType::Key:
-            std::cout << "Key: ";
+            suitName = "Key";
             break;
         case CardType::Sword:
-            std::cout << "Sword: ";
+            suitName = "Sword";
             break;
         case CardType::Hook:
-            std::cout << "Hook: ";
+            suitName = "Hook";
             break;
         case CardType::Oracle:
-            std::cout << "Oracle: ";
+            suitName = "Oracle";
             break;
         case CardType::Map:
-            std::cout << "Map: ";
+            suitName = "Map";
             break;
         case CardType::Mermaid:
-            std::cout << "Mermaid: ";
+            suitName = "Mermaid";
             break;
         case CardType::Kraken:
-            std::cout << "Kraken: ";
+            suitName = "Kraken";
             break;
         case CardType::Anchor:
-            std::cout << "Anchor: ";
+            suitName = "Anchor";
             break;
         }
-        for(size_t i = 0; i < pair.second.size(); ++i) {
-            std::cout << pair.second[i]
-                      << (i == pair.second.size() - 1 ? "" : ", ");
+        for(size_t idx = 0; idx < pair.second.size(); ++idx) {
+            if(idx > 0) {
+                std::cout << ' ';
+            } else {
+                std::cout << '\t';
+            }
+            std::cout << suitName << '(' << pair.second[idx] << ')';
         }
         std::cout << '\n';
     }

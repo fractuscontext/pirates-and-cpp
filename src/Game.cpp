@@ -18,10 +18,8 @@
 #include "MermaidCard.hpp"
 #include "OracleCard.hpp"
 #include "SwordCard.hpp"
-#include <algorithm>
 #include <array>
 #include <iostream>
-#include <random>
 
 Game::Game() = default;
 
@@ -35,11 +33,36 @@ Game& Game::instance() {
 void Game::init() {
     cleanup();
     createDeck();
-    shuffleDeck();
 
-    _player1 = new Player();
-    _player2 = new Player();
+    RandomProvider& rng = randomProvider();
+    rng.shuffle(_deck);
+
+    _player1 = new Player(rng.pickPlayerName());
+    _player2 = new Player(rng.pickPlayerName());
     _currentPlayer = _player1;
+    _currentTurn = 1;
+    _isGameOver = false;
+}
+
+void Game::init(const std::string& name1, const std::string& name2) {
+    cleanup();
+    createDeck();
+
+    randomProvider().shuffle(_deck);
+
+    _player1 = new Player(name1);
+    _player2 = new Player(name2);
+    _currentPlayer = _player1;
+    _currentTurn = 1;
+    _isGameOver = false;
+}
+
+void Game::setRandomProvider(RandomProvider* provider) {
+    _randomProvider = provider;
+}
+
+RandomProvider& Game::randomProvider() {
+    return _randomProvider != nullptr ? *_randomProvider : _defaultProvider;
 }
 
 void Game::createDeck() {
@@ -91,15 +114,11 @@ void Game::createDeck() {
     }
 }
 
-void Game::shuffleDeck() {
-    std::random_device randomDevice;
-    std::mt19937 gen(randomDevice());
-    std::shuffle(_deck.begin(), _deck.end(), gen);
-}
+void Game::shuffleDeck() { randomProvider().shuffle(_deck); }
 
 void Game::start() {
     while(!_isGameOver) {
-        std::cout << "-- Round " << ((_currentTurn + 1) / 2) << ", Turn "
+        std::cout << "\n\n-- Round " << ((_currentTurn + 1) / 2) << ", Turn "
                   << _currentTurn << " ---\n";
         std::cout << _currentPlayer->name() << "'s turn.\n";
         _currentPlayer->printBank();
@@ -110,13 +129,16 @@ void Game::start() {
         bool drawing = true;
         while(drawing && !_isGameOver && !_currentPlayer->isBust()) {
             _currentPlayer->printPlayArea();
+            std::cout << '\n';
             if(InputHelper::askYesNo("Draw again? (y/n): ")) {
+                std::cout << '\n';
                 drawCard(*_currentPlayer);
             } else {
                 drawing = false;
             }
         }
 
+        std::cout << '\n';
         if(_currentPlayer->isBust()) {
             std::cout << "BUST! " << _currentPlayer->name()
                       << " loses all cards in play area.\n";
@@ -137,8 +159,9 @@ void Game::drawCard(Player& player) {
     }
     Card* const card = _deck.back();
     _deck.pop_back();
-    std::cout << player.name() << " draws a " << card->str() << '\n';
+    std::cout << player.name() << " draws a " << card->str() << "\n";
     player.playCard(card, *this);
+    std::cout << '\n';
 }
 
 void Game::nextTurn() {
@@ -152,7 +175,7 @@ void Game::nextTurn() {
 }
 
 void Game::end() {
-    std::cout << "--- Game Over ---\n";
+    std::cout << "\n--- Game Over ---\n\n";
     _player1->printBank();
     _player2->printBank();
     int const score1 = _player1->calculateScore();
