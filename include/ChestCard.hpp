@@ -41,6 +41,17 @@ public:
      * @param player The player who drew this card.
      */
     void play(Game& game, Player& player) override;
+
+    /**
+     * @brief Triggers the Chest/Key combo bonus when banked alongside a Key.
+     *
+     * If the play area also contains a Key, draws bonus cards from the
+     * discard pile equal to the number of cards being banked.
+     *
+     * @param game   The current game instance.
+     * @param player The player banking this card.
+     */
+    void willAddToBank(Game& game, Player& player) override;
 };
 
 #endif

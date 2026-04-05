@@ -52,10 +52,6 @@
               types_or = [ "c" "c++" ];
             };
 
-            clang-tidy = {
-              enable = true;
-              types_or = [ "c" "c++" ];
-            };
           };
         };
       in

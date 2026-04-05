@@ -52,43 +52,12 @@ bool Player::playCard(Card* card, Game& game) {
 bool Player::isBust() const { return _bustChecker.isBust(); }
 
 void Player::bankPlayArea(Game& game) {
-    //Collect all cards currently in the play area
-    //Chest/Key logic check before adding
-    bool hasChest = false;
-    bool hasKey = false;
-    for(auto* card : _playArea) {
-        if(card->type() == CardType::Chest) {
-            hasChest = true;
-        }
-        if(card->type() == CardType::Key) {
-            hasKey = true;
-        }
-    }
-
-    int bonusCount = 0;
-    if(hasChest && hasKey) {
-        bonusCount = static_cast<int>(_playArea.size());
-    }
-
     for(auto* card : _playArea) {
         card->willAddToBank(game, *this);
         _bank.push_back(card);
     }
     _playArea.clear();
     _bustChecker.reset();
-
-    if(bonusCount > 0) {
-        std::cout << "\nChest and Key combination! Drawing " << bonusCount
-                  << " bonus cards from discard.\n";
-        //Drawing from discard pile to bank
-        for(int i = 0; i < bonusCount && !game.discardPile().empty(); ++i) {
-            Card* const bonus = game.discardPile().back();
-            game.discardPile().pop_back();
-            _bank.push_back(bonus);
-            std::cout << "  Added " << bonus->str() << " to bank.\n";
-        }
-        std::cout << '\n';
-    }
 }
 
 void Player::discardPlayArea(CardCollection& discardPile) {
