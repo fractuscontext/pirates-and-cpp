@@ -12,13 +12,13 @@
 KeyCard::KeyCard(int val) : Card(CardType::Key, val) {}
 
 std::string KeyCard::str() const {
-    return "Key (" + std::to_string(value()) + ")";
+    return "Key(" + std::to_string(value()) + ")";
 }
 
 void KeyCard::play(Game& game, Player& player) {
     static_cast<void>(game);
     static_cast<void>(player);
     std::cout
-        << "No immediate effect. If banked with a chest,\ndraw as many bonus "
+        << "No immediate effect. If banked with a Chest, draw as many bonus "
            "cards from the Discard pile as you moved into your Bank.\n";
 }

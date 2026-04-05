@@ -14,7 +14,7 @@
 AnchorCard::AnchorCard(int val) : Card(CardType::Anchor, val) {}
 
 std::string AnchorCard::str() const {
-    return "Anchor (" + std::to_string(value()) + ")";
+    return "Anchor(" + std::to_string(value()) + ")";
 }
 
 void AnchorCard::play(Game& game, Player& player) {
@@ -24,12 +24,11 @@ void AnchorCard::play(Game& game, Player& player) {
     if(turn != playArea.end()) {
         std::cout
             << "Anchor: Any cards drawn before this are safe and moved to "
-               "the bank."
-            << '\n';
+               "the bank.\n";
         auto& mutableBank = player.bank();
 
         for(auto cardIt = playArea.begin(); cardIt != turn; ++cardIt) {
-            std::cout << "Saving " << (*cardIt)->str() << " to bank." << '\n';
+            std::cout << "  Saving " << (*cardIt)->str() << " to bank.\n";
             mutableBank.push_back(*cardIt);
         }
         playArea.erase(playArea.begin(), turn);

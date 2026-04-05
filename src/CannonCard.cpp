@@ -7,59 +7,32 @@
  * SPDX-License-Identifier: MIT
  */
 #include "CannonCard.hpp"
+#include "CardSelector.hpp"
 #include "Game.hpp"
-#include "InputHelper.hpp"
 #include "Player.hpp"
-#include <algorithm>
 #include <iostream>
-#include <map>
-#include <vector>
 
 CannonCard::CannonCard(int val) : Card(CardType::Cannon, val) {}
 
 std::string CannonCard::str() const {
-    return "Cannon (" + std::to_string(value()) + ")";
+    return "Cannon(" + std::to_string(value()) + ")";
 }
 
 void CannonCard::play(Game& game, Player& player) {
     static_cast<void>(player);
     auto& other = game.otherPlayer();
-    const auto& otherBank = other.bank();
+    auto& otherBank = other.bank();
     if(otherBank.empty()) {
-        std::cout << "Cannon: No cards to discard from the other player's bank."
-                  << '\n';
+        std::cout
+            << "Cannon: No cards to discard from the other player's bank.\n";
         return;
     }
 
-    std::map<CardType, Card*> topCards;
-    for(auto* card : otherBank) {
-        if(!topCards.contains(card->type())
-           || card->value() > topCards[card->type()]->value()) {
-            topCards[card->type()] = card;
-        }
-    }
+    Card* const toDiscard = CardSelector::selectAndRemove(
+        otherBank,
+        "Cannon: Which suit to discard from " + other.name() + "'s bank?");
 
-    std::cout << "Cannon: Which suit to discard from " << other.name()
-              << "'s bank?" << '\n';
-    std::vector<CardType> availableTypes;
-    int idx = 0;
-    for(auto const& [type, card] : topCards) {
-        availableTypes.push_back(type);
-        std::cout << idx++ << ": " << card->str() << '\n';
-    }
-
-    int const choice
-        = InputHelper::askChoice("Choice: ", availableTypes.size());
-
-    CardType const chosenType = availableTypes[choice];
-    Card* const toDiscard = topCards[chosenType];
-
-    auto& mutableBank = other.bank();
-    const auto turn = std::ranges::find(mutableBank, toDiscard);
-    if(turn != mutableBank.end()) {
-        mutableBank.erase(turn);
-        game.discardCard(toDiscard);
-        std::cout << "Discarded " << toDiscard->str() << " from "
-                  << other.name() << "'s bank." << '\n';
-    }
+    game.discardCard(toDiscard);
+    std::cout << "Discarded " << toDiscard->str() << " from " << other.name()
+              << "'s bank." << '\n';
 }

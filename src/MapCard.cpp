@@ -18,7 +18,7 @@
 MapCard::MapCard(int val) : Card(CardType::Map, val) {}
 
 std::string MapCard::str() const {
-    return "Map (" + std::to_string(value()) + ")";
+    return "Map(" + std::to_string(value()) + ")";
 }
 
 void MapCard::play(Game& game, Player& player) {
@@ -28,14 +28,15 @@ void MapCard::play(Game& game, Player& player) {
         return;
     }
 
-    std::cout << "Map: Choose a card from the discard pile to play:" << '\n';
+    std::cout << "Map: Choose a card from the discard pile to play:\n";
     int const drawCount = std::min(3, static_cast<int>(discard.size()));
     std::vector<Card*> options;
     for(int i = 0; i < drawCount; ++i) {
         options.push_back(discard.back());
         discard.pop_back();
-        std::cout << i << ": " << options.back()->str() << '\n';
+        std::cout << "  " << (i + 1) << ": " << options.back()->str() << '\n';
     }
+    std::cout << '\n';
 
     int const choice = InputHelper::askChoice("Choice: ", options.size());
 

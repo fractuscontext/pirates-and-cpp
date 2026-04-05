@@ -12,7 +12,7 @@
 MermaidCard::MermaidCard(int val) : Card(CardType::Mermaid, val) {}
 
 std::string MermaidCard::str() const {
-    return "Mermaid (" + std::to_string(value()) + ")";
+    return "Mermaid(" + std::to_string(value()) + ")";
 }
 
 void MermaidCard::play(Game& game, Player& player) {

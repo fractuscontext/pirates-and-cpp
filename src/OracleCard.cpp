@@ -13,7 +13,7 @@
 OracleCard::OracleCard(int val) : Card(CardType::Oracle, val) {}
 
 std::string OracleCard::str() const {
-    return "Oracle (" + std::to_string(value()) + ")";
+    return "Oracle(" + std::to_string(value()) + ")";
 }
 
 void OracleCard::play(Game& game, Player& player) {
