@@ -34,7 +34,7 @@ EXTRACT_ALL            = NO
 # The rubric dictates documenting "interfaces" (public APIs) in headers.
 # This prevents Doxygen from complaining if you don't document private helper
 # variables that users of your class shouldn't care about anyway.
-EXTRACT_PRIVATE        = NO
+EXTRACT_PRIVATE        = YES
 EXTRACT_STATIC         = YES
 
 GENERATE_HTML          = YES
@@ -42,3 +42,10 @@ GENERATE_LATEX         = NO
 GENERATE_MAN           = NO
 GENERATE_RTF           = NO
 GENERATE_XML           = NO
+
+# Class diagrams via Graphviz
+HAVE_DOT               = YES
+UML_LOOK               = YES
+DOT_GRAPH_MAX_NODES    = 100
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES

@@ -159,11 +159,19 @@ public:
     Game& operator=(Game&&) = delete;
 
 private:
+    /** @brief Private constructor for singleton pattern. */
     Game();
+    /** @brief Destructor. Cleans up all game resources. */
     ~Game();
 
+    /** @brief Creates the 60-card deck with all suits and values. */
     void createDeck();
+    /** @brief Frees all allocated cards and players. */
     void cleanup();
+    /**
+     * @brief Returns the active random provider (injected or default).
+     * @return Reference to the current RandomProvider.
+     */
     RandomProvider& randomProvider();
 
     CardCollection _deck;        /**<The shared deck of cards. */
