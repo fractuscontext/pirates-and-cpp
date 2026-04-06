@@ -104,8 +104,7 @@ the `Game` driver and individual card behaviours:
 build.bat
 ```
 
-This generates a Visual Studio 2022 solution in `vs_build/` and builds a
-Release executable.
+The script auto-detects CMake (checking `PATH` and common Visual Studio installation directories), generates a Visual Studio 2022 solution in `vs_build/`, and builds a Release executable.
 
 ### Manual CMake
 
@@ -121,7 +120,7 @@ cmake --build build
 include/   Header files (.hpp) — one per class
 src/       Implementation files (.cpp)
 tests/     Unit tests (Google Test)
-docs/      Doxygen output and contributing guide
+docs/      Design document, Doxygen output, and contributing guide
 ```
 
 ## Testing
@@ -152,10 +151,15 @@ cd build && ctest --output-on-failure
 
 ## Documentation
 
-API documentation is generated with [Doxygen](https://www.doxygen.nl/).
-Pre-built HTML docs are in `docs/doxygen_output/html/`.
+- **Design document**: [docs/design_document.pdf](docs/design_document.pdf) —
+  UML class diagram and design decision notes.
+- **API docs**: Generated with [Doxygen](https://www.doxygen.nl/).
+  Pre-built HTML in `docs/doxygen_output/html/`.
+- **UML generation**: A `.clang-uml` config is included for
+  [clang-uml](https://github.com/bkryza/clang-uml), which can
+  auto-generate PlantUML class diagrams from the source.
 
-To regenerate:
+To regenerate API docs:
 
 ```bash
 doxygen Doxyfile

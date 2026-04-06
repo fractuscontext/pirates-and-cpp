@@ -28,7 +28,7 @@
             markdownlint = {
               enable = true;
               name = "Markdown Lint Check";
-              entry = "${pkgs.markdownlint-cli}/bin/markdownlint .";
+              entry = "${pkgs.markdownlint-cli}/bin/markdownlint --ignore-path .gitignore .";
               pass_filenames = false;
             };
 
@@ -73,6 +73,7 @@
             markdownlint-cli
             nixpkgs-fmt
             doxygen
+            clang-uml
           ] ++ lib.optionals stdenv.isLinux [
             valgrind-light
           ];

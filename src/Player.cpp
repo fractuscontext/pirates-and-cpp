@@ -9,10 +9,12 @@
 #include "Player.hpp"
 #include "Card.hpp"
 #include "Game.hpp"
+#include <algorithm>
 #include <array>
 #include <cstdlib>
 #include <iostream>
 #include <map>
+#include <ranges> // IWYU pragma: keep
 #include <utility>
 
 Player::Player() {
