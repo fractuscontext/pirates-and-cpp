@@ -187,3 +187,4 @@ const CardCollection& Player::playArea() const { return _playArea; }
 const CardCollection& Player::bank() const { return _bank; }
 CardCollection& Player::playArea() { return _playArea; }
 CardCollection& Player::bank() { return _bank; }
+BustChecker& Player::bustChecker() { return _bustChecker; }

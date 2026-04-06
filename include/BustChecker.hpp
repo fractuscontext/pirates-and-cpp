@@ -51,6 +51,17 @@ public:
     void setBust() { _bust = true; }
 
     /**
+     * @brief Removes a suit from the tracked set.
+     *
+     * Call when a card is moved out of the play area (e.g. Anchor saving
+     * cards to the bank) so that a later draw of the same suit does not
+     * incorrectly trigger a bust.
+     *
+     * @param type The suit to remove.
+     */
+    void removeCard(CardType type) { _seenSuits.erase(type); }
+
+    /**
      * @brief Resets all tracked state. Call when the play area is cleared.
      */
     void reset() {

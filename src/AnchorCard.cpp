@@ -29,6 +29,7 @@ void AnchorCard::play(Game& game, Player& player) {
 
         for(auto cardIt = playArea.begin(); cardIt != turn; ++cardIt) {
             std::cout << "  Saving " << (*cardIt)->str() << " to bank.\n";
+            player.bustChecker().removeCard((*cardIt)->type());
             mutableBank.push_back(*cardIt);
         }
         playArea.erase(playArea.begin(), turn);

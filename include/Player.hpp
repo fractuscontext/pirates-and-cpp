@@ -138,6 +138,13 @@ public:
      */
     CardCollection& bank();
 
+    /**
+     * @brief Returns a mutable reference to the bust checker.
+     *
+     * @return Reference to the player's BustChecker.
+     */
+    BustChecker& bustChecker();
+
 private:
     std::string _name;        /**<The player's display name. */
     CardCollection _playArea; /**<Cards in the current play area. */
