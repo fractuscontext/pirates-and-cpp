@@ -70,6 +70,7 @@
             lldb
             ninja
             clang-tools
+            llvmPackages.llvm # llvm-cov, llvm-profdata for coverage
 
             # Hook Dependencies
             reuse

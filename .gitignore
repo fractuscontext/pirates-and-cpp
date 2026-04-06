@@ -447,3 +447,5 @@ docs/doxygen_output/
 .pre-commit-config.yaml
 
 build/
+build-coverage/
+coverage_report/

@@ -10,6 +10,7 @@ FULL_PATH_NAMES        = NO
 INPUT                  = . src/
 FILE_PATTERNS          = *.cpp *.h *.hpp
 RECURSIVE              = YES
+EXCLUDE                = build build-cov build-coverage tests
 
 QUIET                  = YES
 WARNINGS               = YES

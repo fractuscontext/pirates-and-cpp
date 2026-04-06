@@ -69,8 +69,34 @@ The project follows the [Pitchfork](https://api.csswg.org/bikeshed/?force=1&url=
 include/   — Public header files (.hpp)
 src/       — Implementation files (.cpp)
 docs/      — Project documentation and Doxygen output
-tests/     — Test placeholder
+tests/     — Unit tests (Google Test)
 ```
+
+## Testing
+
+Unit tests use [Google Test](https://github.com/google/googletest) (fetched automatically via CMake). Four test suites cover cards, players, game logic, and card abilities (91 tests total).
+
+```bash
+./build.sh --test
+```
+
+Or manually:
+
+```bash
+cmake -B build -S . -G Ninja
+cmake --build build
+./build/DeadMansDrawTests
+```
+
+### Coverage Report
+
+Generate an LLVM source-based coverage report:
+
+```bash
+./build.sh --coverage
+```
+
+This builds with instrumentation, runs all tests, prints a terminal summary, and writes an HTML report to `coverage_report/index.html`.
 
 ## Documentation
 
